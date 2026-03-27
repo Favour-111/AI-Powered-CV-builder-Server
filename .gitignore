@@ -1,0 +1,68 @@
+# =========================
+# DEPENDENCIES
+# =========================
+node_modules/
+
+# =========================
+# ENV FILES (VERY IMPORTANT)
+# =========================
+.env
+.env.local
+.env.development
+.env.production
+
+# =========================
+# LOG FILES
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# =========================
+# OS FILES
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# BUILD OUTPUTS
+# =========================
+dist/
+build/
+
+# =========================
+# VITE / FRONTEND
+# =========================
+.vite/
+node_modules/.vite/
+
+# =========================
+# UPLOADS (YOUR PROJECT)
+# =========================
+uploads/
+uploads/*
+
+# =========================
+# DATABASE FILES (IF ANY LOCAL CACHE)
+# =========================
+*.sqlite
+*.db
+
+# =========================
+# IDE / EDITORS
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# COVERAGE / TEST
+# =========================
+coverage/
+
+# =========================
+# OPTIONAL: CACHE
+# =========================
+.cache/
