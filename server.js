@@ -7,7 +7,16 @@ const cvRoutes = require("./routes/cv");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: true }));
+app.use(
+  cors({
+    origin: [
+      "https://ai-powered-cv-builder-client-57bj.vercel.app",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
