@@ -11,5 +11,7 @@ CREATE TABLE IF NOT EXISTS cvs (
   content JSONB NOT NULL,
   profile_image_url TEXT,
   show_profile_image BOOLEAN DEFAULT FALSE,
+  template_id TEXT,
+  label TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );
