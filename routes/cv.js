@@ -9,7 +9,9 @@ const Groq = require("groq-sdk");
 const { optionalAuth, requireAuth } = require("../middleware/auth");
 
 // const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-const UPLOAD_DIR = process.env.UPLOAD_DIR || "uploads";
+const UPLOAD_DIR =
+  process.env.UPLOAD_DIR || (process.env.VERCEL ? "/tmp/uploads" : "uploads");
+const PUBLIC_UPLOAD_BASE = "/api/uploads";
 
 function getGroqClient() {
   if (!process.env.GROQ_API_KEY) {
@@ -127,7 +129,7 @@ router.post(
         `${cvData.fullName || "Untitled"} CV`;
 
       if (req.file) {
-        cvData.profileImage = `${req.protocol}://${req.get("host")}/${UPLOAD_DIR}/${req.file.filename}`;
+        cvData.profileImage = `${PUBLIC_UPLOAD_BASE}/${req.file.filename}`;
       }
 
       let aiCv;
