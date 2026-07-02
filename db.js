@@ -1,5 +1,24 @@
 const { Pool } = require("pg");
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+const connectionString = process.env.DATABASE_URL || null;
+const poolConfig = {};
+if (connectionString) {
+  poolConfig.connectionString = connectionString;
+}
+
+// Enable SSL for providers (Render, Heroku, etc.) when appropriate.
+// Defaults to enabling SSL in production or when DB_SSL=true or when the
+// connection string contains sslmode=require.
+const needsSSL =
+  process.env.DB_SSL === "true" ||
+  (process.env.DATABASE_URL && process.env.DATABASE_URL.includes("sslmode=require")) ||
+  process.env.NODE_ENV === "production";
+
+if (needsSSL) {
+  poolConfig.ssl = { rejectUnauthorized: false };
+}
+
+const pool = new Pool(poolConfig);
 
 async function ensureSchema() {
   await pool.query(`
