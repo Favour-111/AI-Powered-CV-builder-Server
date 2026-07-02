@@ -9,32 +9,15 @@ const app = express();
 
 app.set("trust proxy", 1);
 
-const clientOriginEnv = process.env.CLIENT_ORIGIN || "";
-const allowedOrigins = clientOriginEnv
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-
-function isOriginAllowed(origin) {
-  if (!origin) {
-    return true;
-  }
-
-  if (allowedOrigins.length === 0) {
-    return true;
-  }
-
-  return allowedOrigins.includes(origin);
-}
+const corsOptions = {
+  origin: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+};
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-
-  if (origin && !isOriginAllowed(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-    res.setHeader("Vary", "Origin");
-    return res.status(403).json({ error: `Origin ${origin} not allowed by CORS` });
-  }
 
   if (origin) {
     res.setHeader("Access-Control-Allow-Origin", origin);
@@ -59,23 +42,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) {
-      return callback(null, true);
-    }
-
-    if (isOriginAllowed(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error(`Origin ${origin} not allowed by CORS`));
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-};
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
